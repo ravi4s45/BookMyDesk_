@@ -1,13 +1,19 @@
 import axios from "axios";
-import { Auth } from "two-step-auth";
+import genUsername from "unique-username-generator";
 //import connection from "../common/db"
-const API_URL = "http://localhost:3001/";
+const API_URL = "https://localhost:44368/Register/";
 
-const register = (usernameReg, emailReg, passwordReg) => {
-    return axios.post(API_URL + "register", {
-        username: usernameReg,
-        email:emailReg,
-        password: passwordReg,
+const register = (usernameReg,designationReg, emailReg, passwordReg) => {
+  const useridreg = genUsername.generateFromEmail(
+    emailReg,
+    5
+  );
+    return axios.post(API_URL , {
+          UserId:useridreg,
+          Name: usernameReg,
+          Designation:designationReg,
+          Password: passwordReg,
+          Email:emailReg     
     }).then((response) => {
     console.log(response);
 });
@@ -26,11 +32,11 @@ const login = (email,password) => {
         password,
     })
     .then((response) => {
-      if (response.data.accessToken) {
-        localStorage.setItem("user", JSON.stringify(response.data));
+      if (response) {
+        localStorage.setItem("user", JSON.stringify(response));
       }
-
-      return response.data;
+      console.log(response);
+      return response;
     });
 };
 
@@ -44,20 +50,9 @@ const getCurrentUser = () => {
 
 
 
-async function OTPVerification(emailId) {
-    
-  
-   const result = await Auth(emailId, "BookMyDesk");
-    //console.log(res);
-    //console.log(res.mail);
-    console.log(result.OTP);
-    //console.log(res.success);
-}
-
 export default {
   register,
   login,
   logout,
-    getCurrentUser,
-    OTPVerification
+    getCurrentUser
 };

@@ -46,16 +46,17 @@ const Login = (props) => {
     if (checkBtn.current.context._errors.length === 0) {
       AuthService.login(username, password).then(
         () => {
+          
           props.history.push("/profile");
           window.location.reload();
         },
         (error) => {
-          const resMessage =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
+          const resMessage = "Incorrect UserName or Password"
+            // (error.response &&
+            //   error.response.data &&
+            //   error.response.data.message) ||
+            // error.message ||
+            // error.toString();
 
           setLoading(false);
           setMessage(resMessage);
@@ -77,7 +78,7 @@ const Login = (props) => {
 
         <Form onSubmit={handleLogin} ref={form}>
           <div className="form-group">
-            <label htmlFor="username">Username</label>
+            <label htmlFor="username">Email</label>
             <Input
               type="text"
               className="form-control"

@@ -1,5 +1,5 @@
 const express = require("express");
-const mysql = require("mysql");
+const sql = require("mssql");
 const cors = require("cors");
 
 const bodyParser = require("body-parser");
@@ -32,29 +32,59 @@ app.use(
         },
     })
 );
-const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'me',
-    password: 'kmno4&^%7415',
-    database: 'ProfilesDB'
+
+app.get("/", (req, res) => {
+    var config = {
+        server: 'localhost',
+        database: 'profilesDB',
+        trustServerCertificate: true
+    };
+    sql.connect(config, function (err) {
+
+        if (err) console.log(err);
+
+        // create Request object
+        var request = new sql.Request();
+
+        // query to the database and get the records
+        request.query('select * from dbo.ProfilesTB', function (err, recordset) {
+
+            if (err) console.log(err)
+
+            // send records as a response
+            res.send(recordset);
+
+        });
+    });
 });
-db.connect();
+
 
 app.post('/register', (req, res) => {
     const username = req.body.username;
     const email = req.body.email
     const password = req.body.password;
+
     bcrypt.hash(password, saltRound, (err, hash) => {
+
         if (err) {
             console.log(err)
         }
-        db.execute(
-            "INSERT INTO ProfilesDB.dbo.ProfilesTB (username,email,password) VALUES (?,?,?)",
-            [username,email,hash],
-            (err, result) => {
-                console.log(err);
+
+        var users = {
+            "Name": username,
+            "Email": email,
+            "Password": hash
+        }
+        db.query('INSERT INTO ProfilesDB.dbo.ProfilesTB SET ?', users, function (error, results, fields) {
+            if (error) {
+                console.log(error)
+            } else {
+                console.log(
+                    "success - user registered sucessfully"
+                );
             }
-        );
+        });
+        
     })
 });
 app.get("/login", (req, res) => {
@@ -92,6 +122,6 @@ app.post('/login', (req, res) => {
     );
 });
 
-app.listen(3001, () => {
+app.listen(3306, () => {
     console.log("running server");
 });

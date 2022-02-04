@@ -4,8 +4,9 @@
     "\\server",
     "\\src",
     "\\src\\components",
-    "\\src\\services"
+    "\\src\\services",
+    "\\src\\Styles"
   ],
-  "SelectedNode": "\\src\\components\\Login.js",
+  "SelectedNode": "\\src\\components\\Home.js",
   "PreviewInSolutionExplorer": false
 }

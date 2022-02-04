@@ -1,0 +1,25 @@
+.heading {
+    color: white;
+    padding:10px;
+   text-align:center;
+   
+    background-color:black
+}
+
+.headstyle {
+    color: black;
+    padding: 10px;
+    text-align: center;
+}
+
+.head {
+   /* align-content: end;*/
+        text-align: center
+}
+
+.container {
+    justify-content:center;
+    align-items:center;
+    background-color:white;
+    flex:1
+}

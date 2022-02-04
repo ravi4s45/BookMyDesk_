@@ -51,6 +51,7 @@ const Register = (props) => {
   const checkBtn = useRef();
 
   const [username, setUsername] = useState("");
+  const [designation, setDesignation] = useState("Employee");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [successful, setSuccessful] = useState(false);
@@ -60,7 +61,10 @@ const Register = (props) => {
     const username = e.target.value;
     setUsername(username);
   };
-
+  const onSelectDesignation = (e) => {
+    const designation = e.target.value;
+    setDesignation(designation);
+  }
   const onChangeEmail = (e) => {
     const email = e.target.value;
     setEmail(email);
@@ -80,7 +84,7 @@ const Register = (props) => {
     form.current.validateAll();
 
     if (checkBtn.current.context._errors.length === 0) {
-      AuthService.register(username, email, password).then(
+      AuthService.register(username, designation, email, password).then(
           (response) => {
               console.log("hello")
           setMessage(response.data.message);
@@ -124,6 +128,14 @@ const Register = (props) => {
                   validations={[required, vusername]}
                 />
               </div>
+
+              <div>
+              <label htmlFor="designation">Designation</label>
+              <select class="form-control" onChange = {onSelectDesignation} value={designation}>
+              <option>Employee</option>
+              <option>Manager</option>
+             </select>
+             </div>
 
               <div className="form-group">
                 <label htmlFor="email">Email</label>
